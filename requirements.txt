@@ -1,0 +1,6 @@
+imageio==2.13.3
+numpy==1.20.3
+opencv_python_headless==4.5.4.60
+Pillow==8.4.0
+streamlit==1.2.0
+torch==1.10.0
