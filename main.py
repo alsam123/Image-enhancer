@@ -34,6 +34,7 @@ def about():
 def load_image(filename):
     image = cv2.imread(filename)
     return image
+@st.cache
 def convert(img):
     
     with st.spinner('Working on it...'):
