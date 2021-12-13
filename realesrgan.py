@@ -3,17 +3,18 @@ from torch.nn import functional as F
 from PIL import Image
 import numpy as np
 import cv2
-
+import streamlit as st
 from rrdbnet_arch import RRDBNet
 from utils_sr import *
 
 
 class RealESRGAN:
+    @st.cache(suppress_st_warning=True) 
     def __init__(self, device, scale=4):
         self.device = device
         self.scale = scale
         self.model = RRDBNet(num_in_ch=3, num_out_ch=3, num_feat=64, num_block=23, num_grow_ch=32, scale=scale)
-        
+    @st.cache(suppress_st_warning=True)   
     def load_weights(self, model_path):
         loadnet = torch.load(model_path)
         if 'params' in loadnet:
@@ -24,7 +25,7 @@ class RealESRGAN:
             self.model.load_state_dict(loadnet, strict=True)
         self.model.eval()
         self.model.to(self.device)
-        
+    @st.cache(suppress_st_warning=True)    
     def predict(self, lr_image, batch_size=4, patches_size=192,
                 padding=24, pad_size=15):
         scale = self.scale
