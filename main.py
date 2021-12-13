@@ -35,20 +35,18 @@ def load_image(filename):
     image = cv2.imread(filename)
     return image
 @st.cache
+def load_model():
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model = RealESRGAN(device, scale=4)
+    model.load_weights('weights/RealESRGAN_x4.pth')
+    return model
 def convert(img):
     
     with st.spinner('Working on it...'):
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-        model = RealESRGAN(device, scale=4)
-        model.load_weights('weights/RealESRGAN_x4.pth')
-
-   
+        model = load_model()
         image = img.convert('RGB')
-
         sr_image = model.predict(image)
     st.success('Done!')
-    
     st.image(sr_image, caption='Super Resolution image', use_column_width=True)
 
 def photo():
